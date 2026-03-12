@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}travelshare{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+{% if user.is_authenticated %}
+<nav class="navbar">
+  <a href="{% url 'feed' %}" class="nav-logo">travelshare</a>
+  <div class="nav-links">
+    <a href="{% url 'feed' %}" class="nav-icon {% if request.resolver_match.url_name == 'feed' %}active{% endif %}" title="Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    </a>
+    <a href="{% url 'explore' %}" class="nav-icon {% if request.resolver_match.url_name == 'explore' %}active{% endif %}" title="Explore">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </a>
+    <a href="{% url 'create_post' %}" class="nav-icon nav-create {% if request.resolver_match.url_name == 'create_post' %}active{% endif %}" title="New Post">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 8v8M8 12h8"/></svg>
+    </a>
+    <a href="{% url 'bookmarks' %}" class="nav-icon {% if request.resolver_match.url_name == 'bookmarks' %}active{% endif %}" title="Bookmarks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>
+    </a>
+    <a href="{% url 'profile' username=user.username %}" class="nav-avatar" title="Profile">
+      {% if user.profile.avatar %}
+        <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}">
+      {% else %}
+        <div class="nav-avatar-placeholder">{{ user.username|first|upper }}</div>
+      {% endif %}
+    </a>
+  </div>
+</nav>
+{% endif %}
+
+<main class="main-content {% if not user.is_authenticated %}auth-page{% endif %}">
+  {% if messages %}
+    <div class="messages-container">
+      {% for message in messages %}
+        <div class="message message-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

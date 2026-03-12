@@ -1,8 +1,10 @@
 asgiref==3.11.1
 Django==6.0.3
-packaging @ file:///C:/miniconda3/conda-bld/packaging_1761049137378/work
+packaging==25.0
 pillow==12.1.1
 setuptools==80.10.2
 sqlparse==0.5.5
 tzdata==2025.3
 wheel==0.46.3
+django-crispy-forms>=2.0
+crispy-bootstrap5>=0.7
