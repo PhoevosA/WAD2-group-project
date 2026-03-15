@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Create Account — travelshare{% endblock %}
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <h1 class="brand-name">travelshare</h1>
+      <p class="brand-tagline">Join the community</p>
+    </div>
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          <label>{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div class="field-error">{{ field.errors.0 }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+    </form>
+    <div class="auth-divider"><span>Already have an account?</span></div>
+    <a href="{% url 'login' %}" class="btn btn-outline btn-full">Sign In</a>
+  </div>
+</div>
+{% endblock %}
