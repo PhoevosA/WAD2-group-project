@@ -1,0 +1,85 @@
+{% load tz %}
+<article class="post-card">
+  <header class="post-header">
+    <a href="{% url 'profile' post.author.username %}" class="post-author">
+      {% if post.author.profile.avatar %}
+        <img src="{{ post.author.profile.avatar.url }}" alt="{{ post.author.username }}" class="post-avatar">
+      {% else %}
+        <div class="post-avatar-placeholder">{{ post.author.username|first|upper }}</div>
+      {% endif %}
+      <div class="post-author-info">
+        <span class="post-author-name">{{ post.author.username }}</span>
+        {% if post.location %}
+          <span class="post-location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="11"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            {{ post.location }}
+          </span>
+        {% endif %}
+      </div>
+    </a>
+    {% if post.author == request.user %}
+      <div class="post-menu">
+        <button class="menu-trigger">⋯</button>
+        <div class="menu-dropdown">
+          <a href="{% url 'edit_post' post.pk %}">Edit</a>
+          <a href="{% url 'delete_post' post.pk %}" class="danger">Delete</a>
+        </div>
+      </div>
+    {% endif %}
+  </header>
+
+  <a href="{% url 'post_detail' post.pk %}" class="post-image-link">
+    <img src="{{ post.image.url }}" alt="Post" class="post-image" loading="lazy">
+  </a>
+
+  <div class="post-actions">
+    <button class="action-btn like-btn {% if post.pk in liked_ids %}liked{% endif %}"
+      data-post-id="{{ post.pk }}"
+      data-url="{% url 'like_toggle' post.pk %}">
+      <svg viewBox="0 0 24 24" fill="{% if post.pk in liked_ids %}currentColor{% else %}none{% endif %}" stroke="currentColor" stroke-width="1.5" width="22">
+        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+      </svg>
+    </button>
+    <a href="{% url 'post_detail' post.pk %}#comments" class="action-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    </a>
+    <button class="action-btn bookmark-btn {% if post.pk in bookmarked_ids %}bookmarked{% endif %} ml-auto"
+      data-post-id="{{ post.pk }}"
+      data-url="{% url 'bookmark_toggle' post.pk %}">
+      <svg viewBox="0 0 24 24" fill="{% if post.pk in bookmarked_ids %}currentColor{% else %}none{% endif %}" stroke="currentColor" stroke-width="1.5" width="22"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>
+    </button>
+  </div>
+
+  <div class="post-meta">
+    <span class="likes-count" id="likes-{{ post.pk }}">{{ post.get_likes_count }} likes</span>
+  </div>
+
+  {% if post.description %}
+    <div class="post-description">
+      <span class="post-desc-author">{{ post.author.username }}</span>
+      {{ post.description }}
+    </div>
+  {% endif %}
+
+  {% if post.tags.all %}
+    <div class="post-tags">
+      {% for tag in post.tags.all %}
+        <a href="{% url 'tag' tag.name %}" class="tag">#{{ tag.name }}</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if post.get_comments_count > 0 %}
+    <a href="{% url 'post_detail' post.pk %}#comments" class="view-comments">
+      View all {{ post.get_comments_count }} comment{{ post.get_comments_count|pluralize }}
+    </a>
+  {% endif %}
+
+  <div class="post-timestamp">{{ post.created_at|timesince }} ago</div>
+
+  <form method="post" action="{% url 'post_detail' post.pk %}" class="comment-form-inline">
+    {% csrf_token %}
+    <input type="text" name="text" class="comment-input" placeholder="Add a comment…" maxlength="1000">
+    <button type="submit" class="comment-submit">Post</button>
+  </form>
+</article>

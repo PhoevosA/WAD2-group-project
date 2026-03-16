@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Home — travelshare{% endblock %}
+{% block content %}
+<div class="feed-layout">
+  <div class="feed-posts">
+    {% for post in posts %}
+      {% include 'posts/_post_card.html' with post=post %}
+    {% empty %}
+      <div class="empty-feed">
+        <h3>Your feed is empty</h3>
+        <p>Follow people to see their posts, or explore what's trending.</p>
+        <a href="{% url 'explore' %}" class="btn btn-primary">Explore</a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
