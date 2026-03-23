@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <h2>Post Detail</h2>
+
+        <p><strong>{{ post.author.username }}</strong></p>
+        <p>{{ post.description }}</p>
+        <p>{{ post.location }}</p>
+        <p>{{ post.created_at }}</p>
+
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post image" width="400">
+        {% endif %}
+
+        <hr>
+
+        <h3>Comments</h3>
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment.user.username }}</strong>: {{ comment.content }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+
+        <hr>
+
+        <h3>Add a comment</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Comment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
