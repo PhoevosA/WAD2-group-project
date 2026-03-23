@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 {% block title %}Delete Account — travelshare{% endblock %}
 {% block content %}
-<div class="delete-page">
-    <div class="delete-container">
-        <div class="delete-card">
-            <strong>
-            <h2>Are you sure you want to delete your account?</h2><br/>
-            <p>This action is permanent. All of your data will be removed forever.</p><br/>
-            </strong>
-
-            <form method="POST" class="delete-button">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Yes, Delete My Account</button>
-                <a href="{% url 'profile' request.user%}" class="btn btn-outline">No, take me back</a>
-            </form>
-        </div>
+<div class="settings-page">
+  <div class="danger-zone">
+    <h2 class="settings-title">Delete Account</h2>
+    <div class="danger-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="1.5" width="40" height="40">
+        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <h3>Are you sure?</h3>
+      <p>This action is permanent and cannot be undone. All your posts, comments, likes, and followers will be permanently removed.</p>
+      <form method="post" class="danger-actions">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
+        <a href="{% url 'profile' username=request.user.username %}" class="btn btn-outline">Cancel</a>
+      </form>
     </div>
+  </div>
 </div>
 {% endblock %}
