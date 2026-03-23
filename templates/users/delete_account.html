@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Delete Account — travelshare{% endblock %}
+{% block content %}
+<div class="delete-page">
+    <div class="delete-container">
+        <div class="delete-card">
+            <strong>
+            <h2>Are you sure you want to delete your account?</h2><br/>
+            <p>This action is permanent. All of your data will be removed forever.</p><br/>
+            </strong>
+
+            <form method="POST" class="delete-button">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Yes, Delete My Account</button>
+                <a href="{% url 'profile' request.user%}" class="btn btn-outline">No, take me back</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -21,7 +21,7 @@ body {
   min-height: 100vh;
 }
 
-// Auth pages
+/* Auth pages */
 .auth-page {
   display: flex;
   align-items: center;
@@ -30,13 +30,13 @@ body {
   background: var(--bg);
 }
 
-.auth-container {
+.auth-container{
   width: 100%;
   max-width: 400px;
   padding: 1rem;
 }
 
-.auth-card {
+.auth-card{
   background: var(--card);
   border-radius: var(--radius);
   padding: 2.5rem 2rem;
@@ -63,7 +63,7 @@ body {
   font-weight: 300;
 }
 
-// Forms
+/* Forms */
 .auth-form .form-group {
   margin-bottom: 1.2rem;
 }
@@ -100,7 +100,7 @@ body {
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
-// Errors
+/* Errors */
 .form-error,
 .field-error {
   color: var(--error);
@@ -108,7 +108,7 @@ body {
   margin-top: 0.3rem;
 }
 
-// Buttons
+/* Buttons */
 .btn {
   display: inline-block;
   padding: 0.75rem 1.4rem;
@@ -142,7 +142,7 @@ body {
 
 .btn-full { width: 100%; }
 
-// Divider
+/* Divider */
 .auth-divider {
   display: flex;
   align-items: center;
@@ -164,7 +164,7 @@ body {
   white-space: nowrap;
 }
 
-// Messages
+/* Messages */
 .messages-container {
   position: fixed;
   top: 1rem;
@@ -187,13 +187,13 @@ body {
 .message-success { border-left: 3px solid #00ba7c; }
 .message-error   { border-left: 3px solid var(--error); }
 
-// Responsive
+/* Responsive */
 @media (max-width: 480px) {
   .auth-card { padding: 2rem 1.4rem; }
   .brand-name { font-size: 2rem; }
 }
 
-// Navbar
+/* Navbar */
 .navbar {
   display: flex;
   align-items: center;
@@ -262,7 +262,7 @@ body {
   font-weight: 600;
 }
 
-// Main content
+/* Main content */
 .main-content {
   max-width: 640px;
   margin: 0 auto;
@@ -287,4 +287,101 @@ body {
 .empty-feed p {
   color: var(--text-muted);
   font-size: 0.95rem;
+}
+
+/* Post */
+
+.post-image {
+  max-width: 500px;
+}
+
+.post-avatar {
+  width: 50px;
+  height: auto;
+  clip-path: circle(50% at center);
+}
+
+/* Profile */
+
+.profile-avatar{
+  width: 200px;
+  height: auto;
+  clip-path: circle(50% at center);
+  float: left;
+  text-align: center;
+}
+
+.profile-layout{
+  clear: both;
+}
+
+.profile-follow-info{
+  float: right;
+  padding: 5px;
+}
+
+.profile-follow-info a{
+  color: var(--text);
+  text-decoration: none;
+}
+
+.profile-bio{
+  display: flex;
+  align-items: flex-start;
+}
+
+.follow-btn {
+  float: right;
+  height: 25px;
+  width: 100px;  
+  border-radius: 10px;
+  background-color: var(--card);
+  color:var(--text);
+}
+
+/* Edit Profile */
+
+#avatar-formatting-id a{
+  display: block;
+}
+
+#avatar-clear_id {
+  float: left;
+  margin-right: 5px;
+}
+
+.delete-link{
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.delete-link:hover{
+  color:var(--accent-hover)
+}
+
+/* Delete */
+
+.delete-button button{
+  margin-bottom: 10px;
+}
+
+.delete-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  background: var(--bg);
+}
+
+.delete-container{
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+}
+
+.delete-card{
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  border: 1px solid var(--border);
 }

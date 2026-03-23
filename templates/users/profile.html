@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile — travelshare{% endblock %}
+{% block content %}
+
+<div>
+  {% if profile.avatar %}
+      <img src="{{ profile.avatar.url }}" alt="{{ profile.user }}" class="profile-avatar">
+  {% else %}
+      <img src="{% static 'img/default_profile.svg' %}" alt="{{ profile.user }}" class="profile-avatar">
+  {% endif %}
+</div>
+
+<div class="profile-info">
+  <h1>{{ profile.user }}</h1>
+
+  {% if not is_own_profile %}
+    <button class="follow-btn" data-url="{% url 'follow_toggle' profile.user.username %}">
+      {% if is_following %}
+        Unfollow
+      {% else %}
+        Follow
+      {% endif %}
+    </button>
+  {% endif %}
+
+  <h3>Website: <a href="{{ profile.website }}">{{ profile.website }}</a></h3>
+
+  <p class="profile-follow-info">
+    <a href="{% url 'followers' profile.user %}">Followers: {{ followers_count }}</a>
+  </p>
+  <p class="profile-follow-info">
+    <a href="{% url 'following' profile.user %}">Following: {{ following_count }}</a>
+  </p>
+  <br/>
+
+  <h4>Bio</h4>
+  <p class="profile-bio">{{ profile.bio }}</p>
+  <br/>
+
+  <p>Account Created: {{ profile.user.date_joined }}</p>
+
+  {% if is_own_profile %}
+    <a href="{% url 'edit_profile' %}" class="profile-edit-button">Edit Profile</a>
+  {% endif %}
+</div>
+
+<div class="profile-layout">
+  <h1>Posts</h1>
+
+  <div class="profile-posts">
+    {% for post in posts %}
+      {% include 'posts/_post_card.html' with post=post %}
+
+    {% empty %}
+      <div class="empty-profile">
+        <h3>Your profile page is empty</h3>
+        <p>Make your first post and it will appear here.</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
