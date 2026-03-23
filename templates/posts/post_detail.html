@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <h2>Post Detail</h2>
+
+    <p><strong>{{ post.author.username }}</strong></p>
+    <p>{{ post.description }}</p>
+    <p>{{ post.location }}</p>
+    <p>{{ post.created_at }}</p>
+
+    {% if post.image %}
+        <img src="{{ post.image.url }}" width="400">
+    {% endif %}
+
+    <button id="like-btn" data-post-id="{{ post.pk }}">
+        {% if is_liked %}
+            ❤️ <span id="like-count">{{ post.get_likes_count }}</span>
+        {% else %}
+            🤍 <span id="like-count">{{ post.get_likes_count }}</span>
+        {% endif %}
+    </button>
+
+    <hr>
+
+    <h3>Comments</h3>
+
+    {% for comment in comments %}
+        <p><strong>{{ comment.user.username }}</strong>: {{ comment.text }}</p>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+
+    <hr>
+
+    <h3>Add a comment</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Comment</button>
+    </form>
+
+</div>
+    
+<script>
+document.getElementById("like-btn").addEventListener("click", function() {
+    const postId = this.dataset.postId;
+
+    fetch(`/post/${postId}/like/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const btn = document.getElementById("like-btn");
+
+        if (data.is_liked) {
+            btn.innerHTML = `❤️ <span id="like-count">${data.likes_count}</span>`;
+        } else {
+            btn.innerHTML = `🤍 <span id="like-count">${data.likes_count}</span>`;
+        }
+    });
+});
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+
+{% endblock %}
