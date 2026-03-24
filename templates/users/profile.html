@@ -1,63 +1,127 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block title %}Profile — travelshare{% endblock %}
+{% load tz %}
+{% block title %}{{ profile_user.username }} — travelshare{% endblock %}
 {% block content %}
+<div class="profile-page">
 
-<div>
-  {% if profile.avatar %}
-      <img src="{{ profile.avatar.url }}" alt="{{ profile.user }}" class="profile-avatar">
-  {% else %}
-      <img src="{% static 'img/default_profile.svg' %}" alt="{{ profile.user }}" class="profile-avatar">
-  {% endif %}
-</div>
-
-<div class="profile-info">
-  <h1>{{ profile.user }}</h1>
-
-  {% if not is_own_profile %}
-    <button class="follow-btn" data-url="{% url 'follow_toggle' profile.user.username %}">
-      {% if is_following %}
-        Unfollow
+  <div class="profile-header">
+    <div class="profile-avatar-wrapper">
+      {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="{{ profile_user.username }}" class="profile-avatar">
       {% else %}
-        Follow
+        <div class="profile-avatar-placeholder">{{ profile_user.username|first|upper }}</div>
       {% endif %}
-    </button>
-  {% endif %}
+      {% if is_own_profile %}
+        <a href="{% url 'edit_profile' %}" class="avatar-edit-link" title="Edit profile picture">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14">
+            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
 
-  <h3>Website: <a href="{{ profile.website }}">{{ profile.website }}</a></h3>
+    <div class="profile-info">
+      <div class="profile-top-row">
+        <h1 class="profile-username">{{ profile_user.username }}</h1>
+        {% if is_own_profile %}
+          <a href="{% url 'edit_profile' %}" class="btn btn-outline btn-sm">Edit Profile</a>
+        {% else %}
+          <button class="btn {% if is_following %}btn-outline{% else %}btn-primary{% endif %} btn-sm follow-btn"
+            data-url="{% url 'follow_toggle' profile_user.username %}">
+            {{ is_following|yesno:"Following,Follow" }}
+          </button>
+        {% endif %}
+      </div>
 
-  <p class="profile-follow-info">
-    <a href="{% url 'followers' profile.user %}">Followers: {{ followers_count }}</a>
-  </p>
-  <p class="profile-follow-info">
-    <a href="{% url 'following' profile.user %}">Following: {{ following_count }}</a>
-  </p>
-  <br/>
+      {% if profile_user.first_name or profile_user.last_name %}
+        <div class="profile-display-name">{{ profile_user.first_name }} {{ profile_user.last_name }}</div>
+      {% endif %}
 
-  <h4>Bio</h4>
-  <p class="profile-bio">{{ profile.bio }}</p>
-  <br/>
+      <div class="profile-stats">
+        <span class="stat"><strong>{{ posts_count }}</strong> post{{ posts_count|pluralize }}</span>
+        <a href="{% url 'followers' profile_user.username %}" class="stat">
+          <strong id="followers-count">{{ followers_count }}</strong> follower{{ followers_count|pluralize }}
+        </a>
+        <a href="{% url 'following' profile_user.username %}" class="stat">
+          <strong>{{ following_count }}</strong> following
+        </a>
+      </div>
 
-  <p>Account Created: {{ profile.user.date_joined }}</p>
+      {% if profile.bio %}
+        <p class="profile-bio">{{ profile.bio }}</p>
+      {% endif %}
 
-  {% if is_own_profile %}
-    <a href="{% url 'edit_profile' %}" class="profile-edit-button">Edit Profile</a>
-  {% endif %}
-</div>
+      {% if profile.location %}
+        <span class="profile-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>
+          </svg>
+          {{ profile.location }}
+        </span>
+      {% endif %}
 
-<div class="profile-layout">
-  <h1>Posts</h1>
+      {% if profile.website %}
+        <a href="{{ profile.website }}" class="profile-website" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13">
+            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+          </svg>
+          {{ profile.website }}
+        </a>
+      {% endif %}
 
-  <div class="profile-posts">
+      <div class="profile-meta-dates">
+        <span>Joined {{ profile.created_at|date:"M Y" }}</span>
+        {% if profile_user.last_login %}
+          <span>Last login {{ profile_user.last_login|timesince }} ago</span>
+        {% endif %}
+      </div>
+
+      {% if is_own_profile %}
+        <div class="profile-own-actions">
+          <a href="{% url 'delete_account' %}" class="link-danger">Delete Account</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="profile-tabs">
+    <span class="tab active">Posts</span>
+    {% if is_own_profile %}
+      <a href="{% url 'bookmarks' %}" class="tab">Bookmarks</a>
+    {% endif %}
+  </div>
+
+  <div class="profile-posts-grid">
     {% for post in posts %}
-      {% include 'posts/_post_card.html' with post=post %}
-
+      <a href="{% url 'post_detail' post.pk %}" class="grid-item">
+        <img src="{{ post.image.url }}" alt="Post" loading="lazy">
+        <div class="grid-overlay">
+          <span>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+            {{ post.get_likes_count }}
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+            {{ post.get_comments_count }}
+          </span>
+        </div>
+      </a>
     {% empty %}
-      <div class="empty-profile">
-        <h3>Your profile page is empty</h3>
-        <p>Make your first post and it will appear here.</p>
+      <div class="empty-section">
+        {% if is_own_profile %}
+          <p>You haven't posted anything yet.</p>
+          <a href="{% url 'create_post' %}" class="btn btn-primary">Create Post</a>
+        {% else %}
+          <p>No posts yet.</p>
+        {% endif %}
       </div>
     {% endfor %}
   </div>
+
 </div>
 {% endblock %}
