@@ -137,7 +137,7 @@ def followers_view(request, username):
 def following_view(request, username):
     profile_user = get_object_or_404(User, username=username)
     following = Follow.objects.filter(follower=profile_user).select_related('following__profile')
-    followed_by_request_user = Follow.objects.filter(follower=request.user).values_list('following', flat=True)    
+    followed_by_request_user = Follow.objects.filter(follower=request.user).values_list('following', flat=True)
     return render(request, 'users/followers.html', {
         'profile_user': profile_user,
         'follows': following,
@@ -145,6 +145,8 @@ def following_view(request, username):
         'tab': 'following'
     })
 
+def is_followed_by(self, user):
+    return Follow.objects.filter(follower=user, following=self).exists()
 
 @login_required
 def bookmarks_view(request):
