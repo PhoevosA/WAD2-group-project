@@ -44,7 +44,7 @@
             {% if person != request.user %}
               <button class="btn btn-outline btn-sm follow-btn"
                 data-url="{% url 'follow_toggle' person.username %}">
-                Follow
+                {{ followed_by_request_user|yesno:"Following,Follow" }}
               </button>
             {% endif %}
           </div>
@@ -68,7 +68,7 @@
             {% if person != request.user %}
               <button class="btn btn-outline btn-sm follow-btn"
                 data-url="{% url 'follow_toggle' person.username %}">
-                Follow
+                {{ followed_by_request_user|yesno:"Following,Follow" }}
               </button>
             {% endif %}
           </div>

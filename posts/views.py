@@ -42,7 +42,7 @@ def explore_view(request):
     category = request.GET.get('category', '').strip()
     tag = request.GET.get('tag', '').strip()
 
-    posts = Post.objects.select_related('author__profile').prefetch_related('tags', 'likes')
+    posts = Post.objects.filter(~Q(author=request.user)).select_related('author__profile').prefetch_related('tags', 'likes')
 
     if query:
         posts = posts.filter(

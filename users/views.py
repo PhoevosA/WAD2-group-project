@@ -124,9 +124,11 @@ def follow_toggle_view(request, username):
 def followers_view(request, username):
     profile_user = get_object_or_404(User, username=username)
     followers = Follow.objects.filter(following=profile_user).select_related('follower__profile')
+    followed_by_request_user = Follow.objects.filter(follower=request.user).values_list('following', flat=True)
     return render(request, 'users/followers.html', {
         'profile_user': profile_user,
         'follows': followers,
+        'followed_by_request_user': followed_by_request_user,
         'tab': 'followers'
     })
 
@@ -135,9 +137,11 @@ def followers_view(request, username):
 def following_view(request, username):
     profile_user = get_object_or_404(User, username=username)
     following = Follow.objects.filter(follower=profile_user).select_related('following__profile')
+    followed_by_request_user = Follow.objects.filter(follower=request.user).values_list('following', flat=True)    
     return render(request, 'users/followers.html', {
         'profile_user': profile_user,
         'follows': following,
+        'followed_by_request_user': followed_by_request_user,
         'tab': 'following'
     })
 

@@ -11,13 +11,6 @@
       {% else %}
         <div class="profile-avatar-placeholder">{{ profile_user.username|first|upper }}</div>
       {% endif %}
-      {% if is_own_profile %}
-        <a href="{% url 'edit_profile' %}" class="avatar-edit-link" title="Edit profile picture">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14">
-            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
-          </svg>
-        </a>
-      {% endif %}
     </div>
 
     <div class="profile-info">

@@ -289,99 +289,47 @@ body {
   font-size: 0.95rem;
 }
 
-/* Post */
-
-.post-image {
-  max-width: 500px;
-}
-
-.post-avatar {
-  width: 50px;
-  height: auto;
-  clip-path: circle(50% at center);
-}
-
-/* Profile */
-
-.profile-avatar{
-  width: 200px;
-  height: auto;
-  clip-path: circle(50% at center);
-  float: left;
+.feed-title {
   text-align: center;
 }
 
-.profile-layout{
-  clear: both;
-}
-
-.profile-follow-info{
-  float: right;
-  padding: 5px;
-}
-
-.profile-follow-info a{
-  color: var(--text);
-  text-decoration: none;
-}
-
-.profile-bio{
+/* Post */
+.post-card {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
 }
 
-.follow-btn {
-  float: right;
-  height: 25px;
-  width: 100px;  
-  border-radius: 10px;
-  background-color: var(--card);
-  color:var(--text);
+.post-image {
+  max-width: 100%;
 }
 
-/* Edit Profile */
 
-#avatar-formatting-id a{
-  display: block;
-}
-
-#avatar-clear_id {
+.post-avatar, .post-avatar-placeholder {
+  width: 50px;
+  height: auto;
+  clip-path: circle(50% at center);
   float: left;
-  margin-right: 5px;
 }
 
-.delete-link{
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.delete-link:hover{
-  color:var(--accent-hover)
-}
-
-/* Delete */
-
-.delete-button button{
-  margin-bottom: 10px;
-}
-
-.delete-page {
+.post-avatar-placeholder {
+  background: var(--border);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 50vh;
-  background: var(--bg);
+  font-size: 2.2rem;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.delete-container{
-  width: 100%;
-  max-width: 400px;
-  padding: 1rem;
+/* Explore */
+
+.explore-title {
+  text-align: center;
 }
 
-.delete-card{
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 2.5rem 2rem;
-  border: 1px solid var(--border);
-}
+/* Tag */
+
+.tag-title {
+  text-align: center;
+} 
