@@ -2,6 +2,7 @@
 {% block title %}Home — travelshare{% endblock %}
 {% block content %}
 <div class="feed-layout">
+  <h1 class="feed-title">Your Feed</h1>
   <div class="feed-posts">
     {% for post in posts %}
       {% include 'posts/_post_card.html' with post=post %}

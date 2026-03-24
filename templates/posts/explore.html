@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Explore — travelshare{% endblock %}
+{% block content %}
+<div class="explore-layout">
+    <h1 class="explore-title">Explore</h1>
+    <div class="explore-posts">
+        {% for post in posts %}
+        {% include 'posts/_post_card.html' with post=post %}
+        {% empty %}
+        <div class="empty-explore">
+            <h3>The explore page is empty</h3>
+            <p>Nobody else has posted anything yet!</p>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}

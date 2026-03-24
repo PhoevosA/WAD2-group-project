@@ -34,23 +34,6 @@
   font-weight: 600;
 }
 
-.avatar-edit-link {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 28px;
-  height: 28px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text);
-  text-decoration: none;
-  transition: background 0.2s;
-}
-
 .avatar-edit-link:hover {
   background: var(--border);
 }
@@ -319,6 +302,16 @@
   gap: 0.8rem;
   margin-top: 1.5rem;
 }
+
+.avatar-upload-input a{
+  display: block;
+}
+
+#avatar-clear_id{
+  float: left;
+  margin-right: 5px;
+}
+
 
 /* ===== Danger Zone / Delete Account ===== */
 .danger-zone {
