@@ -408,6 +408,26 @@ a:hover {
   font-size: 0.95rem;
 }
 
+.explore-filter-fields {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.explore-filter input, .explore-filter select{
+  border-radius: 9999px;
+  text-align: center;
+  background-color: var(--card);
+  color: var(--text);
+  font-family: var(--font-body);
+  border: none;
+}
+.filter-btn {
+  display: block;
+  margin: auto;
+  padding: 0.4rem 1.1rem;
+}
+
 /* Tag */
 
 .tag-title {

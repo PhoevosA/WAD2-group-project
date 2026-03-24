@@ -4,6 +4,22 @@
 <div class="explore-layout">
     <h1 class="explore-title">Explore</h1>
     <div class="explore-posts">
+        <form method="GET" class="explore-filter">
+            <div class="explore-filter-fields">
+            <input type="text" name="q" placeholder="Search" value="{{ query }}">
+            <input type="text" name="location" placeholder="Location" value="{{ location }}">
+            <input type="text" name="tag" placeholder="Tag" value="{{ tag }}">
+            <select name="category">
+                <option value="">No Category</option>
+                {% for val, label in categories %}
+                    <option value="{{ val }}" {% if category == val %}selected {% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+            </div>
+            <button type="submit" class="btn btn-outline filter-btn">Filter</button>
+        </form>
         {% for post in posts %}
         {% include 'posts/_post_card.html' with post=post %}
         {% empty %}
